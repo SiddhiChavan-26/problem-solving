@@ -3,7 +3,8 @@
 
 struct Node {
     int key;
-    struct Node *left, *right;
+    struct Node* left;
+    struct Node* right;
 };
 
 struct Node* createNode(int key) {
@@ -13,44 +14,19 @@ struct Node* createNode(int key) {
     return newNode;
 }
 
-
-struct Node* insert(struct Node* root, int key) {
+struct Node* BSTInsert(struct Node* root, int key) {
 
     if (root == NULL) {
         return createNode(key);
     }
-
-    struct Node* parent = NULL; 
-    struct Node* current = root;
-
-    while (current != NULL) {
-        parent = current;  // Set parent to current node
-
-        if (key < current->key) {
-            
-            if (current->left == NULL) {
-               
-                current->left = createNode(key);
-                return root;
-            }
-            current = current->left;  
-        } 
-		else if (key > current->key) {
-           
-            if (current->right == NULL) {
-                
-                current->right = createNode(key);
-                return root;
-            }
-            current = current->right;  
-        } 
-		else {
-           
-            printf("Duplicate key %d not inserted.\n", key);
-            return root;
-        }
+    
+    if (key < root->key) {
+        root->left = BSTInsert(root->left, key);
     }
-
+    
+    else if (key > root->key) {
+        root->right = BSTInsert(root->right, key);
+    }
     return root;
 }
 
@@ -85,12 +61,12 @@ int main() {
     int n = sizeof(elements) / sizeof(elements[0]);
 
     for (i = 0; i < n; i++) {
-        root = insert(root, elements[i]);
+        root = BSTInsert(root, elements[i]);
     }
 
     printf("In-order Traversal:\n");
     inorder(root);
-    
+
     printf("\nPre-order Traversal:\n");
     preorder(root);
 
@@ -99,5 +75,4 @@ int main() {
 
     return 0;
 }
-
 
