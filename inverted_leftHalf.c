@@ -1,0 +1,24 @@
+// Inverted left half pyramid of stars using C
+#include <stdio.h>
+
+int main()
+{
+    int rows = 7;
+
+    // first loop for printing all rows
+    for (int i = 0; i < rows; i++) {
+
+        // first inner loop for printing white spaces
+        for (int j = 0; j < 2 * i; j++) {
+            printf(" ");
+        }
+
+        // second inner loop for printing star *
+        for (int k = 0; k < rows - i; k++) {
+            printf("* ");
+        }
+        printf("");
+    }
+
+    return 0;
+}
