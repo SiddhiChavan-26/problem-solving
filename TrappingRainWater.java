@@ -1,45 +1,38 @@
 import java.util.*;
 
-class TrappingRainWater {
-    static int maxWater(int[] arr) {
-        int left = 1;
-        int right = arr.length - 2;
+public class TrappingRainWater{
+    public static int trappingRainWater(int height[]){
+        int n = height.length;
 
-        int lMax = arr[left - 1];
-        int rMax = arr[right + 1];
-
-        int res = 0;
-        while (left <= right) {
-          
-     
-            if (rMax <= lMax) {
-              
-                
-                res += Math.max(0, rMax - arr[right]);
-
-                // Update right max
-                rMax = Math.max(rMax, arr[right]);
-
-                // Update right pointer as we have decided the amount of water for this
-                right -= 1;
-            } else { 
-              
-                // Add the water for arr[left]
-                res += Math.max(0, lMax - arr[left]);
-
-                // Update left max
-                lMax = Math.max(lMax, arr[left]);
-
-                // Update left pointer as we have
-                // decided water for this
-                left += 1;
-            }
+        //calculate left max boundry
+        int leftMax[] = new int[n];
+        
+        leftMax[0] = height[0];
+        for(int i = 1; i < leftMax.length; i++){
+            leftMax[i] = Math.max(height[i], leftMax[i-1]);
         }
-        return res;
-    }
 
-    public static void main(String[] args) {
-        int[] arr = {2, 1, 5, 3, 1, 0, 4};
-        System.out.println(maxWater(arr));
+        //calculate right max boundry
+        int rightMax[] = new  int [n];
+
+        rightMax[n-1] = height[n-1];
+        for(int i = n - 2; i >= 0; i--){
+            rightMax[i] = Math.max(height[i], rightMax[i+1]);
+        }
+
+        int trappedWater = 0;
+        for(int i = 0; i < n; i++){
+            int waterLevel = Math.min(leftMax[i], rightMax[i]);
+
+            trappedWater += waterLevel - height[i];
+        }
+        return trappedWater;
+    }
+    public static void main(String[] args){
+        int height[] = {4, 2, 0, 6, 3, 2, 5};
+
+        int result = trappingRainWater(height);
+
+        System.out.println("Trapped water is : " + result);
     }
 }
